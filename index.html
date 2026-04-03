@@ -3,38 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOOVLE | Cinema & Streaming</title>
+    <title>MOOVLE TV</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header class="main-header">
-        <div class="logo">MOOVLE</div>
+        <div class="logo" onclick="location.reload()">MOOVLE<span style="color: #0062ff;">TV</span></div>
         <div class="header-center">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" onkeyup="searchMovies()">
+                <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" oninput="handleSearchInput(this.value)">
+                <div id="searchSuggestions" class="search-suggestions"></div>
             </div>
         </div>
         <div class="header-right">
-            <div class="auth-pill" onclick="openAuth()">
-                <span id="userDisplay">Entrar</span>
-                <div class="avatar-blue">👤</div>
-            </div>
+            <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleCredentialResponse"></div>
+            <div class="g_id_signin" data-type="standard" data-shape="pill"></div>
         </div>
     </header>
 
     <div class="layout">
         <aside class="sidebar">
             <nav class="nav-menu">
-                <div class="nav-item active" onclick="filterType('all', this)" title="Início">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                </div>
-                <div class="nav-item" onclick="filterType('movie', this)" title="Filmes">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>
-                </div>
-                <div class="nav-item" onclick="filterType('tv', this)" title="Séries">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
-                </div>
+                <div class="nav-item active" title="Início" onclick="filterType('all', this)"><i class="fas fa-home"></i></div>
+                <div class="nav-item" title="Filmes" onclick="filterType('movie', this)"><i class="fas fa-film"></i></div>
+                <div class="nav-item" title="Séries" onclick="filterType('tv', this)"><i class="fas fa-tv"></i></div>
+                <div class="nav-item" id="fav-menu" title="Minha Lista" onclick="showFavorites(this)"><i class="fas fa-star"></i></div>
             </nav>
         </aside>
 
@@ -46,33 +41,35 @@
                 <button class="pill" onclick="filterGenre('27', this)">Terror</button>
                 <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
             </div>
-
             <section class="shelf">
                 <h2 class="section-title" id="shelfTitle">RECOMENDADOS PARA VOCÊ</h2>
+                <br>
                 <div id="mainGrid" class="movie-grid"></div>
             </section>
         </main>
     </div>
 
-    <div id="playerModal" class="modal-overlay" style="display: none; justify-content: center; align-items: center;">
-        <div class="auth-card" style="width: 95%; max-width: 1100px; height: 90vh; position: relative; padding: 15px; display: flex; flex-direction: column;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <button id="downloadBtn" style="background: #22c55e; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; font-weight: bold;">📥 BAIXAR</button>
-                <button onclick="closePlayer()" style="background: #ff4757; color: white; border: none; padding: 8px 20px; cursor: pointer; border-radius: 5px; font-weight: bold;">FECHAR X</button>
+    <div id="playerModal" class="modal-overlay" style="display: none;">
+        <div class="player-container-rect">
+            <div class="player-top-bar">
+                <div class="top-left">
+                    <button class="back-btn-player" onclick="closePlayer()"><i class="fas fa-chevron-left"></i> VOLTAR</button>
+                    <h3 id="movieTitleDisplay">NOME DO CONTEÚDO</h3>
+                    <button id="modalFavBtn" class="modal-fav-btn" onclick="toggleFavorite()">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+                <div class="quality-badge">4K FULL HD</div>
             </div>
-            <iframe id="videoPlayer" src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div id="authModal" class="modal-overlay" style="display: none;">
-        <div class="auth-card">
-            <button class="close-btn" onclick="closeAuth()">✕</button>
-            <h2 class="auth-title">ACESSAR MOOVLE</h2>
-            <div class="input-group">
-                <input type="email" id="emailField" placeholder="E-mail">
-                <input type="password" id="passField" placeholder="Senha">
+            <div class="video-wrapper">
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
             </div>
-            <button class="btn-login" onclick="doLogin()">ENTRAR</button>
+            <div class="source-selector">
+                <span class="source-label">Fontes:</span>
+                <button class="source-btn active" onclick="changeSource('vidsrc', this)">VIDSRC</button>
+                <button class="source-btn" onclick="changeSource('superembed', this)">SUPEREMBED</button>
+                <button class="source-btn" onclick="changeSource('embedvip', this)">EMBEDVIP</button>
+            </div>
         </div>
     </div>
 

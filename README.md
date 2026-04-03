@@ -48,4 +48,4 @@ Este projeto é para fins de estudo e portfólio. Os conteúdos exibidos são de
 
 ---
 
-**Desenvolvido com ❤️ por [Seu Nome]**
+**Desenvolvido com ❤️ por [Miguel Forte Dalagassa]**

@@ -1,51 +1,58 @@
-# 🎬 Moovle
+# 📺 MoovleTV — Streaming Experience
 
-O **Moovle** é uma plataforma moderna de busca e visualização de filmes e séries. O projeto utiliza a API do TMDB para fornecer dados em tempo real, com uma interface focada na experiência do usuário (UX) e design inspirado nos grandes serviços de streaming.
+O **MoovleTV** é uma plataforma de entretenimento de última geração que centraliza a busca e exibição de filmes e séries em uma interface de alta performance. Inspirado nos gigantes do mercado como Netflix e Disney+, o projeto oferece uma experiência fluida, dark mode nativo e integração inteligente com múltiplos provedores de conteúdo.
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Funcionalidades Principais
 
-* **Busca em Tempo Real:** Encontre filmes e séries instantaneamente.
-* **Player Integrado:** Assista a trailers e conteúdos através de embed.
-* **Filtros Inteligentes:** Navegue por categorias (Ação, Terror, Ficção, etc).
-* **Design Responsivo:** Interface otimizada para diferentes tamanhos de tela.
-* **Persistência de Usuário:** Sistema de login simples utilizando `localStorage`.
-* **Downloads:** Atalhos para acesso a download de conteúdos.
+* **🔍 Busca Inteligente (Smart Search):** Resultados instantâneos com exibição de Ano, Nota ★ e Categoria (Filme/Série) diretamente na barra de pesquisa.
+* **🔌 Sistema Multi-Fontes:** Player integrado com seletor de 3 fontes distintas (Principal, Alternativa e VIP) para garantir a melhor disponibilidade de conteúdo.
+* **⭐ Minha Lista (Favoritos):** Sistema de persistência via `localStorage` que permite salvar seus filmes e séries favoritos clicando na estrela.
+* **👤 Autenticação Social:** Login integrado com **Google Sign-In**, exibindo perfil personalizado e avatar do usuário na interface.
+* **🏷️ Filtros Dinâmicos:** Navegação rápida por abas de Filmes, Séries e categorias de gênero (Ação, Terror, Ficção, etc).
+* **⚡ Alta Performance:** Carregamento de mais de 100 títulos simultâneos utilizando processamento assíncrono para máxima velocidade.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **HTML5:** Estrutura semântica.
-* **CSS3:** Estilização com Glassmorphism, Gradientes e Flexbox/Grid.
-* **JavaScript (ES6+):** Lógica de consumo de API e manipulação do DOM.
-* **API TMDB:** Fonte de dados para filmes e séries.
-
----
-
-## 📸 Demonstração
-
-*(Dica: Adicione um print do seu site aqui ou um GIF dele funcionando!)*
+* **Frontend:** HTML5 Semântico e CSS3 (Glassmorphism, Flexbox, Grid Layout).
+* **Lógica:** JavaScript Moderno (ES6+), Fetch API e JWT Decoding para Login.
+* **Dados:** TMDB API (The Movie Database).
+* **UI/UX:** Iconografia FontAwesome e Tipografia Google Fonts (Inter).
 
 ---
 
 ## ⚙️ Como rodar o projeto
 
-1.  Clone este repositório:
+1.  **Clone este repositório:**
     ```bash
-    git clone [https://github.com/SEU_USUARIO/moovle.git](https://github.com/SEU_USUARIO/moovle.git)
+    git clone [https://github.com/SEU_USUARIO/moovletv.git](https://github.com/SEU_USUARIO/moovletv.git)
     ```
-2.  Abra o arquivo `index.html` no seu navegador ou utilize a extensão **Live Server** do VS Code.
 
-> **Nota:** É necessário ter uma chave de API do TMDB configurada no arquivo `script.js`.
+2.  **Configuração de API:**
+    No arquivo `script.js`, insira sua chave do TMDB:
+    ```javascript
+    const API_KEY = 'SUA_CHAVE_AQUI';
+    ```
+
+3.  **Configuração de Login:**
+    No arquivo `index.html`, insira seu Client ID do Google Cloud:
+    ```html
+    data-client_id="SEU_ID_DO_GOOGLE.apps.googleusercontent.com"
+    ```
+
+4.  **Execução:**
+    Basta abrir o arquivo `index.html` em qualquer navegador moderno ou usar a extensão *Live Server* do VS Code.
 
 ---
 
-## 📄 Licença
+## 📄 Licença e Aviso Legal
 
-Este projeto é para fins de estudo e portfólio. Os conteúdos exibidos são de responsabilidade dos provedores de embed.
+Este projeto foi desenvolvido estritamente para fins de estudo e portfólio. O **MoovleTV** não hospeda nenhum arquivo de vídeo em seus servidores, atuando apenas como um indexador de conteúdos fornecidos por serviços de terceiros via embed.
 
 ---
 
 **Desenvolvido com ❤️ por [Miguel Forte Dalagassa]**
+*Transformando código em entretenimento.* 🚀

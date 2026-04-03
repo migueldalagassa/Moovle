@@ -1,0 +1,64 @@
+:root {
+    --bg-dark: #020617;
+    --accent-blue: #0062ff;
+    --glass: rgba(255, 255, 255, 0.05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { 
+    background: radial-gradient(circle at 50% -20%, #0f172a 0%, var(--bg-dark) 85%);
+    color: #fff; min-height: 100vh; overflow-x: hidden;
+}
+
+/* Header & Search */
+.main-header {
+    height: 80px; padding: 0 50px; display: flex; align-items: center; justify-content: space-between;
+    position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.logo { font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; }
+
+.header-center { flex: 1; display: flex; justify-content: center; }
+.search-box input {
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 25px; border-radius: 30px; color: white; width: 450px; outline: none;
+    transition: 0.3s ease;
+}
+.search-box input:focus { width: 500px; border-color: var(--accent-blue); background: rgba(0,0,0,0.5); }
+
+/* Login Pill e Avatar Azul */
+.auth-pill { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 6px 16px; border-radius: 25px; background: var(--glass); transition: 0.3s; }
+.auth-pill:hover { background: rgba(255,255,255,0.1); }
+.avatar-blue { width: 34px; height: 34px; background: var(--accent-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0, 98, 255, 0.4); }
+
+/* Sidebar */
+.sidebar { width: 85px; position: fixed; height: 100vh; display: flex; flex-direction: column; align-items: center; padding-top: 110px; background: rgba(0,0,0,0.1); }
+.nav-item { color: rgba(255,255,255,0.3); margin-bottom: 45px; cursor: pointer; transition: 0.3s; width: 26px; }
+.nav-item.active, .nav-item:hover { color: var(--accent-blue); transform: scale(1.1); }
+
+/* Conteúdo e Categorias */
+.main-content { margin-left: 85px; padding: 110px 50px 50px 50px; }
+.category-pills { display: flex; gap: 12px; margin-bottom: 35px; }
+.pill { 
+    background: var(--glass); border: 1px solid rgba(255,255,255,0.08); 
+    padding: 10px 25px; border-radius: 50px; color: #cbd5e1; cursor: pointer;
+    font-weight: 600; transition: 0.3s;
+}
+.pill.active, .pill:hover { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+
+.section-title { font-weight: 900; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; }
+
+/* Movie Grid */
+.movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; }
+.movie-card { border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1); }
+.movie-card img { width: 100%; height: 270px; object-fit: cover; border-radius: 12px; }
+.movie-card:hover { transform: scale(1.06) translateY(-8px); }
+
+/* Login Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(15px); }
+.auth-card { background: #0f172a; padding: 45px; border-radius: 25px; width: 380px; border: 1px solid rgba(0, 98, 255, 0.2); text-align: center; }
+.auth-title { font-weight: 900; margin-bottom: 30px; letter-spacing: 2px; }
+.input-group input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 10px; background: #000; border: 1px solid #333; color: white; outline: none; }
+.btn-login { width: 100%; padding: 14px; background: var(--accent-blue); border: none; color: white; font-weight: 900; border-radius: 10px; cursor: pointer; }

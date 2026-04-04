@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoovleTV</title>
+    <title>MOOVLE TV</title>
     
     <link rel="icon" type="image/png" href="FaviconMoovleTV.png">
     <link rel="apple-touch-icon" href="FaviconMoovleTV.png">
@@ -15,25 +15,22 @@
 <body>
     <header class="main-header">
         <div class="logo" onclick="location.reload()">MOOVLE<span style="color: #0062ff;">TV</span></div>
-        
         <div class="header-center">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" oninput="handleSearchInput(this.value)">
                 <div id="searchSuggestions" class="search-suggestions"></div>
             </div>
         </div>
-
-        <div class="header-right">
-            </div>
+        <div class="header-right"></div>
     </header>
 
     <div class="layout">
         <aside class="sidebar">
             <nav class="nav-menu">
-                <div class="nav-item active" title="Início" onclick="filterType('all', this)"><i class="fas fa-home"></i></div>
-                <div class="nav-item" title="Filmes" onclick="filterType('movie', this)"><i class="fas fa-film"></i></div>
-                <div class="nav-item" title="Séries" onclick="filterType('tv', this)"><i class="fas fa-tv"></i></div>
-                <div class="nav-item" id="fav-menu" title="Minha Lista" onclick="showFavorites(this)"><i class="fas fa-star"></i></div>
+                <div class="nav-item active" onclick="filterType('all', this)"><i class="fas fa-home"></i></div>
+                <div class="nav-item" onclick="filterType('movie', this)"><i class="fas fa-film"></i></div>
+                <div class="nav-item" onclick="filterType('tv', this)"><i class="fas fa-tv"></i></div>
+                <div class="nav-item" id="fav-menu" onclick="showFavorites(this)"><i class="fas fa-star"></i></div>
             </nav>
         </aside>
 
@@ -47,7 +44,6 @@
             </div>
             <section class="shelf">
                 <h2 class="section-title" id="shelfTitle">RECOMENDADOS PARA VOCÊ</h2>
-                <br>
                 <div id="mainGrid" class="movie-grid"></div>
             </section>
         </main>
@@ -58,28 +54,25 @@
             <div class="player-top-bar">
                 <div class="top-left">
                     <button class="back-btn-player" onclick="closePlayer()"><i class="fas fa-chevron-left"></i> VOLTAR</button>
-                    <h3 id="movieTitleDisplay">NOME DO CONTEÚDO</h3>
-                    <button id="modalFavBtn" class="modal-fav-btn" onclick="toggleFavorite()">
-                        <i class="fas fa-star"></i>
-                    </button>
+                    <h3 id="movieTitleDisplay">CARREGANDO...</h3>
                 </div>
                 <div class="quality-badge">4K FULL HD</div>
             </div>
+
             <div class="video-wrapper">
-                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
+                    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation">
+                </iframe>
             </div>
-            <div class="source-selector">
-                <span class="source-label">Fontes:</span>
-                <button class="source-btn active" onclick="changeSource('vidsrc', this)">VIDSRC</button>
-                <button class="source-btn" onclick="changeSource('superembed', this)">SUPEREMBED</button>
-                <button class="source-btn" onclick="changeSource('embedvip', this)">EMBEDVIP</button>
+
+            <div class="ad-notice">
+                <i class="fas fa-shield-alt"></i>
+                <span>Avisos de "site não seguro" são normais em players gratuitos. <b>Não baixe nada</b> que os anúncios sugerirem. Apenas feche as janelas extras e aproveite o filme!</span>
             </div>
-            <div id="ad-banner-container" style="text-align: center; padding: 10px; background: #0f172a;"></div>
         </div>
     </div>
 
     <script src="https://pl29054234.profitablecpmratenetwork.com/f3/68/d7/f368d7ccb3a5c2e4f5d6ebdd7f4c3ecc.js"></script>
-
     <script src="script.js"></script>
 </body>
 </html>

@@ -4,60 +4,45 @@ const IMG_URL = 'https://image.tmdb.org/t/p/w300';
 
 let favorites = JSON.parse(localStorage.getItem('moovle_favs')) || [];
 let currentItem = null;
-let currentType = 'movie'; 
-let currentGenre = '';
-let currentPage = 1;
-let isFavActive = false; // FLAG PARA CORRIGIR O BUG DOS FAVORITOS
+let currentType = 'movie', currentGenre = '', currentPage = 1;
+let isFavPage = false; // Trava contra bug do Carregar Mais nos favoritos
 
 window.onload = () => loadMovies();
 
-async function loadMovies(isNextPage = false) {
-    if (isFavActive) return; // Impede a API de rodar se estiver na aba de favoritos
+// Função principal de carga com ajuste no botão de carregar mais
+async function loadMovies(isNext = false) {
+    if (isFavPage) return; 
 
     const grid = document.getElementById('mainGrid');
-    const loadBtn = document.getElementById('loadMoreBtn');
+    const loadArea = document.getElementById('loadMoreArea');
     
-    if (!isNextPage) {
-        currentPage = 1;
-        grid.innerHTML = '<div style="color:gray; padding:20px;">Sintonizando...</div>';
-    }
+    if (!isNext) { currentPage = 1; grid.innerHTML = ''; }
 
     try {
         let url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&language=pt-BR&page=${currentPage}&sort_by=popularity.desc`;
-        
-        if (currentGenre === 'anime') {
-            url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&with_genres=16&with_origin_country=JP&language=pt-BR&page=${currentPage}`;
-        } else if (currentGenre) {
-            url += `&with_genres=${currentGenre}`;
-        }
+        if (currentGenre === 'anime') url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&with_genres=16&with_origin_country=JP&language=pt-BR&page=${currentPage}`;
+        else if (currentGenre) url += `&with_genres=${currentGenre}`;
 
         const res = await fetch(url);
         const data = await res.json();
 
-        if (!isNextPage) grid.innerHTML = '';
+        data.results.forEach(item => { if(item.poster_path) createCard(item, grid); });
         
-        data.results.forEach(item => {
-            if(item.poster_path) createCard(item, grid);
-        });
-
         currentPage++;
-        if(loadBtn) loadBtn.style.display = 'block';
-    } catch (e) {
-        console.error("Erro ao carregar:", e);
-    }
+        // Garante que o botão reapareça ao carregar conteúdo da API
+        if(loadArea) loadArea.style.display = 'block';
+    } catch (e) { console.error(e); }
 }
 
 function createCard(item, container) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-    card.innerHTML = `
-        <img src="${IMG_URL + item.poster_path}" loading="lazy">
-        <div class="card-title">${item.title || item.name}</div>
-    `;
+    card.innerHTML = `<img src="${IMG_URL + item.poster_path}"><div class="card-title">${item.title || item.name}</div>`;
     card.onclick = () => openPlayer(item);
     container.appendChild(card);
 }
 
+// Player otimizado para PC e Celular
 function openPlayer(item) {
     currentItem = item;
     const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
@@ -68,12 +53,10 @@ function openPlayer(item) {
     document.getElementById('movieTitleDisplay').innerText = (item.title || item.name).toUpperCase();
     document.getElementById('movieDescription').innerText = item.overview || "";
     
-    player.src = ""; 
+    player.src = ""; // Limpa para evitar erros de conexão recusada
     setTimeout(() => {
-        // Link vidsrc.to é o mais estável para PC e Mobile
         player.src = `https://vidsrc.to/embed/${type}/${item.id}`;
     }, 400);
-
     updateStarUI();
 }
 
@@ -82,50 +65,7 @@ function closePlayer() {
     document.getElementById('playerModal').style.display = 'none';
 }
 
-function filterType(type, el) {
-    isFavActive = false; // Desativa a trava de favoritos
-    currentType = type === 'all' ? 'movie' : type;
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    loadMovies();
-}
-
-function filterGenre(id, btn) {
-    isFavActive = false;
-    currentGenre = id;
-    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadMovies();
-}
-
-function showFavorites(el) {
-    isFavActive = true; // ATIVA A TRAVA: Impede o carregamento da API
-    const grid = document.getElementById('mainGrid');
-    const loadBtn = document.getElementById('loadMoreBtn');
-    
-    if(loadBtn) loadBtn.style.display = 'none'; // Esconde o botão para não bugar
-    
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    
-    grid.innerHTML = favorites.length ? '' : '<p style="padding:20px; color:gray;">Sua lista está vazia.</p>';
-    favorites.forEach(item => createCard(item, grid));
-}
-
-function toggleFavorite() {
-    const index = favorites.findIndex(f => f.id === currentItem.id);
-    if(index === -1) favorites.push(currentItem);
-    else favorites.splice(index, 1);
-    localStorage.setItem('moovle_favs', JSON.stringify(favorites));
-    updateStarUI();
-}
-
-function updateStarUI() {
-    const isFav = favorites.some(f => f.id === currentItem.id);
-    const star = document.querySelector('#modalFavBtn i');
-    if(star) star.style.color = isFav ? "#fbbf24" : "#fff";
-}
-
+// Pesquisa Inteligente com Nota, Ano e Tipo
 async function handleSearchInput(query) {
     const box = document.getElementById('searchSuggestions');
     if (query.length < 2) { box.style.display = 'none'; return; }
@@ -136,11 +76,61 @@ async function handleSearchInput(query) {
     
     data.results.slice(0, 6).forEach(item => {
         if (!item.poster_path) return;
+        const date = item.release_date || item.first_air_date || "";
+        const year = date ? date.split('-')[0] : "";
+        const rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
+
         const div = document.createElement('div');
         div.className = 'suggestion-item';
-        div.innerHTML = `<img src="${IMG_URL + item.poster_path}" style="width:40px; border-radius:4px;"><span style="margin-left:10px;">${item.title || item.name}</span>`;
+        div.innerHTML = `
+            <img src="${IMG_URL + item.poster_path}" style="width:40px; border-radius:4px;">
+            <div class="suggestion-info">
+                <span style="font-size:0.9rem; font-weight:600;">${item.title || item.name}</span>
+                <div class="suggestion-meta">
+                    <span>${item.media_type === 'tv' ? 'Série' : 'Filme'}</span>
+                    <span>${year}</span>
+                    <span class="meta-rating"><i class="fas fa-star"></i> ${rating}</span>
+                </div>
+            </div>
+        `;
         div.onclick = () => { openPlayer(item); box.style.display = 'none'; };
         box.appendChild(div);
     });
     box.style.display = 'block';
+}
+
+function filterType(type, el) {
+    isFavPage = false; // Permite o carregar mais novamente
+    currentType = type === 'all' ? 'movie' : type;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    loadMovies();
+}
+
+// CORREÇÃO DO BUG DOS FAVORITOS
+function showFavorites(el) {
+    isFavPage = true; 
+    const grid = document.getElementById('mainGrid');
+    const loadArea = document.getElementById('loadMoreArea');
+    
+    // Esconde o botão carregar mais para não misturar com a API
+    if(loadArea) loadArea.style.display = 'none'; 
+    
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    grid.innerHTML = favorites.length ? '' : '<p style="padding:20px; color:gray;">Nenhum favorito.</p>';
+    favorites.forEach(item => createCard(item, grid));
+}
+
+function toggleFavorite() {
+    const index = favorites.findIndex(f => f.id === currentItem.id);
+    index === -1 ? favorites.push(currentItem) : favorites.splice(index, 1);
+    localStorage.setItem('moovle_favs', JSON.stringify(favorites));
+    updateStarUI();
+}
+
+function updateStarUI() {
+    const isFav = favorites.some(f => f.id === currentItem.id);
+    const star = document.querySelector('#modalFavBtn i');
+    if(star) star.style.color = isFav ? "#fbbf24" : "#fff";
 }

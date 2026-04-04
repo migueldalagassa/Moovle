@@ -2,32 +2,35 @@
 <html lang="pt-br">
 <head>
     <script async src="https://pl29054234.profitablecpmratenetwork.com/f3/68/d7/f368d7ccb3a5c2e4f5d6ebdd7f4c3ecc.js"></script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="origin-when-cross-origin">
     <meta name="google-site-verification" content="IE4PyfuJtRSZdf_2syrrsT1UrT2vBdzkdRTVCK92Nqo" />
 
     <title>MoovleTV - Filmes e Séries Online Grátis</title>
     
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://image.tmdb.org">
-
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="main-header">
+    <header class="main-header glass-effect">
         <div class="logo" onclick="location.reload()">MOOVLE<span>TV</span></div>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar..." oninput="handleSearchInput(this.value)">
-            <div id="searchSuggestions" class="search-suggestions"></div>
+            <input type="text" id="searchInput" placeholder="Buscar filmes ou séries..." oninput="handleSearchInput(this.value)">
+            <div id="searchSuggestions" class="search-suggestions glass-effect"></div>
         </div>
     </header>
 
-    <aside class="sidebar">
+    <aside class="sidebar glass-effect">
         <nav class="nav-menu">
             <div class="nav-item active" onclick="filterType('all', this)"><i class="fas fa-home"></i><span>Início</span></div>
             <div class="nav-item" onclick="filterType('movie', this)"><i class="fas fa-film"></i><span>Filmes</span></div>
@@ -45,11 +48,12 @@
             <button class="pill" onclick="filterGenre('27', this)">Terror</button>
             <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
         </div>
+
         <h2 class="section-title" id="shelfTitle">RECOMENDADOS</h2>
         <div id="mainGrid" class="movie-grid"></div>
         
         <div class="load-more-container">
-            <button id="loadMoreBtn" onclick="loadMovies(true)">CARREGAR MAIS</button>
+            <button id="loadMoreBtn" class="glass-effect" onclick="loadMovies(true)">CARREGAR MAIS</button>
         </div>
     </main>
 
@@ -57,7 +61,7 @@
         <div class="player-card-premium glass-effect">
             <div class="player-header">
                 <div class="header-left">
-                    <button class="back-btn-circle" onclick="closePlayer()" title="Fechar">
+                    <button class="back-btn-circle" onclick="closePlayer()">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                     <div class="title-info">
@@ -76,13 +80,14 @@
                 </div>
                 <div class="video-container-premium">
                     <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
+                        allow="autoplay; encrypted-media"
                         sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-presentation">
                     </iframe>
                 </div>
             </div>
             
             <div class="player-footer">
-                <p id="movieDescription" style="color: #ccc; font-size: 0.9rem; margin-top: 15px;"></p>
+                <p id="movieDescription"></p>
             </div>
         </div>
     </div>

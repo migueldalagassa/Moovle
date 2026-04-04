@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="origin-when-cross-origin">
-    <meta name="google-site-verification" content="IE4PyfuJtRSZdf_2syrrsT1UrT2vBdzkdRTVCK92Nqo" />
-
-    <title>MoovleTV - Filmes e Séries Online Grátis</title>
+    
+    <title>MoovleTV - Filmes e Séries Online</title>
     
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
@@ -39,55 +38,42 @@
             <button class="pill" onclick="filterGenre('anime', this)">Animes</button> 
             <button class="pill" onclick="filterGenre('10751', this)">Infantil</button>
             <button class="pill" onclick="filterGenre('27', this)">Terror</button>
-            <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
         </div>
         <h2 class="section-title" id="shelfTitle">RECOMENDADOS</h2>
         <div id="mainGrid" class="movie-grid"></div>
         
-        <div class="load-more-container">
+        <div class="load-more-container" id="loadMoreArea">
             <button id="loadMoreBtn" onclick="loadMovies(true)">CARREGAR MAIS</button>
         </div>
     </main>
 
     <div id="playerModal" class="modal-overlay" style="display: none;">
-    <div class="player-card-premium">
-        <div class="player-header">
-            <div class="header-left">
-                <button class="back-btn-circle" onclick="closePlayer()" title="Fechar">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <div class="title-info">
-                    <h3 id="movieTitleDisplay">CARREGANDO...</h3>
-                    <span class="streaming-tag">FULL HD</span>
+        <div class="player-card-premium">
+            <div class="player-header">
+                <div class="header-left">
+                    <button class="back-btn-circle" onclick="closePlayer()"><i class="fas fa-arrow-left"></i></button>
+                    <div class="title-info">
+                        <h3 id="movieTitleDisplay">CARREGANDO...</h3>
+                        <span class="streaming-tag">FULL HD</span>
+                    </div>
+                </div>
+                <button id="modalFavBtn" class="fav-btn-premium" onclick="toggleFavorite()"><i class="fas fa-star"></i></button>
+            </div>
+
+            <div class="adblock-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Se o vídeo não carregar, desative o Adblock ou mude o navegador.</span>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="ads-notice-premium">FECHE OS ANÚNCIOS PARA LIBERAR O VÍDEO</div>
+                <div class="video-container-premium">
+                    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
                 </div>
             </div>
-            <button id="modalFavBtn" class="fav-btn-premium" onclick="toggleFavorite()">
-                <i class="fas fa-star"></i>
-            </button>
-        </div>
-
-        <div class="adblock-alert">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span>Se o vídeo não carregar ou der erro de conexão, desative o Adblock.</span>
-        </div>
-
-        <div class="video-wrapper">
-            <div class="ads-notice-premium">
-                <i class="fas fa-info-circle"></i> Feche os anúncios para liberar o vídeo
-            </div>
-            <div class="video-container-premium">
-                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
-                    allow="autoplay; encrypted-media">
-                </iframe>
-            </div>
-        </div>
-        
-        <div class="player-footer">
-            <p id="movieDescription" style="color: #ccc; font-size: 0.9rem; margin-top: 15px;"></p>
+            <div class="player-footer"><p id="movieDescription"></p></div>
         </div>
     </div>
-</div>
-    
     <script src="script.js"></script>
 </body>
 </html>

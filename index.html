@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="origin-when-cross-origin">
+    
     <title>MoovleTV - Filmes e Séries Online</title>
     
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -15,7 +15,6 @@
 <body>
     <header class="main-header">
         <div class="logo" onclick="location.reload()">MOOVLE<span>TV</span></div>
-        
         <div class="search-box">
             <div class="search-input-wrapper">
                 <i class="fas fa-search"></i>
@@ -41,13 +40,12 @@
             <button class="pill" onclick="filterGenre('anime', this)">Animes</button> 
             <button class="pill" onclick="filterGenre('10751', this)">Infantil</button>
             <button class="pill" onclick="filterGenre('27', this)">Terror</button>
-            <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
         </div>
 
         <h2 class="section-title">RECOMENDADOS</h2>
         <div id="mainGrid" class="movie-grid"></div>
         
-        <div class="load-more-container">
+        <div id="loadMoreArea" class="load-more-container">
             <button id="loadMoreBtn" onclick="loadMovies(true)">CARREGAR MAIS</button>
         </div>
     </main>

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="origin-when-cross-origin">
-    
     <title>MoovleTV - Filmes e Séries Online</title>
     
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -16,8 +15,12 @@
 <body>
     <header class="main-header">
         <div class="logo" onclick="location.reload()">MOOVLE<span>TV</span></div>
+        
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar..." oninput="handleSearchInput(this.value)">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" oninput="handleSearchInput(this.value)">
+            </div>
             <div id="searchSuggestions" class="search-suggestions"></div>
         </div>
     </header>
@@ -38,11 +41,13 @@
             <button class="pill" onclick="filterGenre('anime', this)">Animes</button> 
             <button class="pill" onclick="filterGenre('10751', this)">Infantil</button>
             <button class="pill" onclick="filterGenre('27', this)">Terror</button>
+            <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
         </div>
-        <h2 class="section-title" id="shelfTitle">RECOMENDADOS</h2>
+
+        <h2 class="section-title">RECOMENDADOS</h2>
         <div id="mainGrid" class="movie-grid"></div>
         
-        <div class="load-more-container" id="loadMoreArea">
+        <div class="load-more-container">
             <button id="loadMoreBtn" onclick="loadMovies(true)">CARREGAR MAIS</button>
         </div>
     </main>
@@ -62,7 +67,7 @@
 
             <div class="adblock-alert">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>Se o vídeo não carregar, desative o Adblock ou mude o navegador.</span>
+                <span>Se o vídeo não carregar, desative o Adblock.</span>
             </div>
 
             <div class="video-wrapper">
@@ -74,6 +79,7 @@
             <div class="player-footer"><p id="movieDescription"></p></div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

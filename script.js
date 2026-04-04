@@ -1,6 +1,6 @@
 const API_KEY = '7dc850a67b09d8b2f84f78b53deecf5b';
 const BASE_URL = 'https://api.themoviedb.org/3';
-// Reduzido para w200 para voar no celular
+// Reduzido para w200 para carregar instantaneamente no 4G/5G do celular
 const IMG_URL = 'https://image.tmdb.org/t/p/w200'; 
 
 let favorites = JSON.parse(localStorage.getItem('moovle_favs')) || [];
@@ -45,7 +45,7 @@ async function loadMovies(isNext = false) {
     }
 }
 
-// Função com Lazy Loading para performance máxima
+// Função com Lazy Loading para performance máxima no scroll do celular
 function createCard(item) {
     const card = document.createElement('div');
     card.className = 'movie-card';
@@ -85,14 +85,21 @@ async function handleSearchInput(query) {
     box.style.display = 'block';
 }
 
+// Otimizado para funcionar em navegadores mobile (Chrome/Safari)
 function openPlayer(item) {
     currentItem = item;
     const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
     const modal = document.getElementById('playerModal');
+    
     document.getElementById('movieTitleDisplay').innerText = (item.title || item.name).toUpperCase();
     document.getElementById('movieDescription').innerText = item.overview || "";
+    
     modal.style.display = 'flex';
-    document.getElementById('videoPlayer').src = `https://vidsrc.me/embed/${type}?tmdb=${item.id}`;
+    
+    // Adicionado parâmetro de cor para combinar com o seu tema MoovleTV
+    const videoUrl = `https://vidsrc.me/embed/${type}?tmdb=${item.id}&color=0062ff`;
+    document.getElementById('videoPlayer').src = videoUrl;
+    
     updateStarUI();
 }
 

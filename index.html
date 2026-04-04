@@ -1,78 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <script src="https://pl29054234.profitablecpmratenetwork.com/f3/68/d7/f368d7ccb3a5c2e4f5d6ebdd7f4c3ecc.js"></script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOOVLE TV</title>
-    
-    <link rel="icon" type="image/png" href="FaviconMoovleTV.png">
-    <link rel="apple-touch-icon" href="FaviconMoovleTV.png">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MoovleTV</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header class="main-header">
-        <div class="logo" onclick="location.reload()">MOOVLE<span style="color: #0062ff;">TV</span></div>
-        <div class="header-center">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" oninput="handleSearchInput(this.value)">
-                <div id="searchSuggestions" class="search-suggestions"></div>
-            </div>
+        <div class="logo" onclick="location.reload()">MOOVLE<span>TV</span></div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar..." oninput="handleSearchInput(this.value)">
+            <div id="searchSuggestions" class="search-suggestions"></div>
         </div>
-        <div class="header-right"></div>
     </header>
 
-    <div class="layout">
-        <aside class="sidebar">
-            <nav class="nav-menu">
-                <div class="nav-item active" onclick="filterType('all', this)"><i class="fas fa-home"></i></div>
-                <div class="nav-item" onclick="filterType('movie', this)"><i class="fas fa-film"></i></div>
-                <div class="nav-item" onclick="filterType('tv', this)"><i class="fas fa-tv"></i></div>
-                <div class="nav-item" id="fav-menu" onclick="showFavorites(this)"><i class="fas fa-star"></i></div>
-            </nav>
-        </aside>
+    <aside class="sidebar">
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="filterType('all', this)"><i class="fas fa-home"></i><span>Início</span></div>
+            <div class="nav-item" onclick="filterType('movie', this)"><i class="fas fa-film"></i><span>Filmes</span></div>
+            <div class="nav-item" onclick="filterType('tv', this)"><i class="fas fa-tv"></i><span>Séries</span></div>
+            <div class="nav-item" onclick="showFavorites(this)"><i class="fas fa-star"></i><span>Favoritos</span></div>
+        </nav>
+    </aside>
 
-        <main class="main-content">
-            <div class="category-pills">
-                <button class="pill active" onclick="filterGenre('', this)">Todos</button>
-                <button class="pill" onclick="filterGenre('28', this)">Ação</button>
-                <button class="pill" onclick="filterGenre('16', this)">Animes</button>
-                <button class="pill" onclick="filterGenre('27', this)">Terror</button>
-                <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
-            </div>
-            <section class="shelf">
-                <h2 class="section-title" id="shelfTitle">RECOMENDADOS PARA VOCÊ</h2>
-                <div id="mainGrid" class="movie-grid"></div>
-            </section>
-        </main>
-    </div>
+    <main class="main-content">
+        <div class="category-pills">
+            <button class="pill active" onclick="filterGenre('', this)">Todos</button>
+            <button class="pill" onclick="filterGenre('28', this)">Ação</button>
+            <button class="pill" onclick="filterGenre('16', this)">Animes</button>
+            <button class="pill" onclick="filterGenre('27', this)">Terror</button>
+            <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
+        </div>
+        <h2 class="section-title" id="shelfTitle">RECOMENDADOS</h2>
+        <div id="mainGrid" class="movie-grid"></div>
+    </main>
 
     <div id="playerModal" class="modal-overlay" style="display: none;">
-        <div class="player-container-rect">
-            <div class="player-top-bar">
-                <div class="top-left">
-                    <button class="back-btn-player" onclick="closePlayer()"><i class="fas fa-chevron-left"></i> VOLTAR</button>
+        <div class="player-card-rect">
+            <div class="player-header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="closePlayer()"><i class="fas fa-times"></i></button>
                     <h3 id="movieTitleDisplay">CARREGANDO...</h3>
                 </div>
-                <div class="quality-badge">4K FULL HD</div>
+                <button id="modalFavBtn" class="fav-btn-modal" onclick="toggleFavorite()"><i class="fas fa-star"></i></button>
             </div>
-
-            <div class="video-wrapper">
-                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
-                    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation">
-                </iframe>
-            </div>
-
-            <div class="ad-notice">
-                <i class="fas fa-shield-alt"></i>
-                <span>Avisos de "site não seguro" são normais em players gratuitos. <b>Não baixe nada</b> que os anúncios sugerirem. Apenas feche as janelas extras e aproveite o filme!</span>
+            <div class="ads-notice"><i class="fas fa-info-circle"></i> FECHE OS ANÚNCIOS PARA LIBERAR O VÍDEO</div>
+            <div class="video-container-rect">
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
             </div>
         </div>
     </div>
-
-    <script src="https://pl29054234.profitablecpmratenetwork.com/f3/68/d7/f368d7ccb3a5c2e4f5d6ebdd7f4c3ecc.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

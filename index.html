@@ -4,8 +4,9 @@
     <script src="https://pl29054234.profitablecpmratenetwork.com/f3/68/d7/f368d7ccb3a5c2e4f5d6ebdd7f4c3ecc.js"></script>
 
     <meta name="google-site-verification" content="IE4PyfuJtRSZdf_2syrrsT1UrT2vBdzkdRTVCK92Nqo" />
-    <meta name="description" content="Assista aos melhores filmes e séries online no MoovleTV. O melhor catálogo de streaming gratuito com qualidade HD e lançamentos.">
+    <meta name="description" content="Assista aos melhores filmes e séries online no MoovleTV.">
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>MoovleTV - Assistir Filmes e Séries Online Grátis HD</title>
@@ -19,7 +20,10 @@
     <header class="main-header">
         <div class="logo" onclick="location.reload()">MOOVLE<span>TV</span></div>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar filmes ou séries..." oninput="handleSearchInput(this.value)">
+            <form action="javascript:void(0)" onsubmit="handleSearchSubmit()">
+                <input type="search" id="searchInput" placeholder="Buscar filmes ou séries..." 
+                       oninput="handleSearchInput(this.value)" autocomplete="off">
+            </form>
             <div id="searchSuggestions" class="search-suggestions"></div>
         </div>
     </header>
@@ -37,12 +41,14 @@
         <div class="category-pills">
             <button class="pill active" onclick="filterGenre('', this)">Todos</button>
             <button class="pill" onclick="filterGenre('28', this)">Ação</button>
-            <button class="pill" onclick="filterGenre('anime', this)">Animes</button> 
+            <button class="pill" onclick="filterGenre('16', this)">Animes</button> 
             <button class="pill" onclick="filterGenre('10751', this)">Infantil</button>
             <button class="pill" onclick="filterGenre('27', this)">Terror</button>
             <button class="pill" onclick="filterGenre('878', this)">Ficção</button>
         </div>
+
         <h2 class="section-title" id="shelfTitle">RECOMENDADOS</h2>
+        
         <div id="mainGrid" class="movie-grid"></div>
         
         <div class="load-more-container">
@@ -71,13 +77,8 @@
             <div class="video-wrapper">
                 <div class="ads-notice-premium">FECHE OS ANÚNCIOS PARA LIBERAR O VÍDEO</div>
                 <div class="video-container-premium">
-                    <iframe 
-                        id="videoPlayer" 
-                        src="" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        allow="autoplay; encrypted-media; picture-in-picture"
-                        referrerpolicy="no-referrer">
+                    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
+                            allow="autoplay; encrypted-media" referrerpolicy="no-referrer">
                     </iframe>
                 </div>
             </div>

@@ -50,35 +50,41 @@
         </div>
     </main>
 
-    <div id="playerModal" class="modal-overlay" style="display: none;">
-        <div class="player-card-premium">
-            <div class="player-header">
-                <div class="header-left">
-                    <button class="back-btn-circle" onclick="closePlayer()"><i class="fas fa-arrow-left"></i></button>
-                    <div class="title-info">
-                        <h3 id="movieTitleDisplay">CARREGANDO...</h3>
-                        <span class="streaming-tag">FULL HD</span>
-                    </div>
+    <div id="playerModal" class="player-overlay" style="display: none;">
+    <div class="premium-modal">
+        <div class="modal-top">
+            <button class="close-modal" onclick="closePlayer()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="modal-info">
+                <h2 id="movieTitleDisplay">Carregando...</h2>
+                <div class="badge-row">
+                    <span class="quality-badge">4K ULTRA HD</span>
+                    <span class="lang-badge">PT-BR</span>
                 </div>
-                <button id="modalFavBtn" class="fav-btn-premium" onclick="toggleFavorite()"><i class="fas fa-star"></i></button>
             </div>
+            <button id="modalFavBtn" class="action-btn" onclick="toggleFavorite()">
+                <i class="far fa-bookmark"></i>
+            </button>
+        </div>
 
-            <div class="adblock-premium-alert">
-                <div class="alert-content">
-                    <i class="fas fa-shield-alt"></i>
-                    <span><strong>DICA:</strong> Se o vídeo não carregar, desative o Adblock para liberar o player.</span>
-                </div>
-            </div>
+        <div class="warning-banner">
+            <i class="fas fa-circle-exclamation"></i>
+            <span>Se o vídeo não carregar ou a conexão for recusada, desative o <b>Adblock</b>.</span>
+        </div>
 
-            <div class="video-wrapper">
-                <div class="ads-notice-premium">FECHE OS ANÚNCIOS PARA LIBERAR O VÍDEO</div>
-                <div class="video-container-premium">
-                    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-                </div>
+        <div class="main-player-view">
+            <div class="iframe-container">
+                <div class="player-placeholder">Preparando streaming...</div>
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
             </div>
-            <div class="player-footer"><p id="movieDescription"></p></div>
+        </div>
+        
+        <div class="modal-details">
+            <p id="movieDescription"></p>
         </div>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>

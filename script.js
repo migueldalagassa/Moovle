@@ -1,6 +1,7 @@
 const API_KEY = '7dc850a67b09d8b2f84f78b53deecf5b';
 const BASE_URL = 'https://api.themoviedb.org/3';
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+// Reduzido de w500 para w300 para carregar muito mais rápido no mobile
+const IMG_URL = 'https://image.tmdb.org/t/p/w300'; 
 
 let favorites = JSON.parse(localStorage.getItem('moovle_favs')) || [];
 let currentItem = null;
@@ -14,7 +15,8 @@ async function loadMovies() {
     grid.innerHTML = '<p style="color:gray; padding:20px;">Carregando...</p>';
     try {
         let allResults = [];
-        for(let i = 1; i <= 5; i++) {
+        // Reduzido para 2 páginas iniciais para não pesar o 4G do usuário
+        for(let i = 1; i <= 2; i++) { 
             const url = currentGenre 
                 ? `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&with_genres=${currentGenre}&language=pt-BR&page=${i}`
                 : `${BASE_URL}/${currentType}/popular?api_key=${API_KEY}&language=pt-BR&page=${i}`;
@@ -30,12 +32,15 @@ async function loadMovies() {
 function createCard(item, container) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-    card.innerHTML = `<img src="${IMG_URL + item.poster_path}"><div class="card-title">${item.title || item.name}</div>`;
+    // Adicionado loading="lazy" para performance máxima
+    card.innerHTML = `
+        <img src="${IMG_URL + item.poster_path}" loading="lazy" alt="${item.title || item.name}">
+        <div class="card-title">${item.title || item.name}</div>
+    `;
     card.onclick = () => openPlayer(item);
     container.appendChild(card);
 }
 
-// BUSCA INTELIGENTE COM SUGESTÕES COMPLETAS
 async function handleSearchInput(query) {
     const box = document.getElementById('searchSuggestions');
     if (query.length < 2) { box.style.display = 'none'; return; }
@@ -58,7 +63,7 @@ async function handleSearchInput(query) {
             const div = document.createElement('div');
             div.className = 'suggestion-item';
             div.innerHTML = `
-                <img src="${IMG_URL + item.poster_path}">
+                <img src="${IMG_URL + item.poster_path}" loading="lazy">
                 <div class="sug-info">
                     <div class="sug-title">${item.title || item.name}</div>
                     <div class="sug-meta">
@@ -86,12 +91,13 @@ function openPlayer(item) {
     setTimeout(() => {
         document.getElementById('movieTitleDisplay').innerText = (item.title || item.name).toUpperCase();
         player.src = `https://vidsrc.me/embed/${currentType}?tmdb=${item.id}`;
-    }, 1500);
+    }, 1200);
     updateStarUI();
 }
 
 function closePlayer() {
-    document.getElementById('videoPlayer').src = "";
+    const player = document.getElementById('videoPlayer');
+    player.src = ""; // Para o áudio imediatamente
     document.getElementById('playerModal').style.display = 'none';
 }
 
@@ -118,6 +124,7 @@ function showFavorites(el) {
 }
 
 function toggleFavorite() {
+    if(!currentItem) return;
     const index = favorites.findIndex(f => f.id === currentItem.id);
     index === -1 ? favorites.push(currentItem) : favorites.splice(index, 1);
     localStorage.setItem('moovle_favs', JSON.stringify(favorites));
@@ -125,10 +132,14 @@ function toggleFavorite() {
 }
 
 function updateStarUI() {
+    if(!currentItem) return;
     const isFav = favorites.some(f => f.id === currentItem.id);
     document.querySelector('#modalFavBtn i').style.color = isFav ? "#fbbf24" : "#fff";
 }
 
 document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-box')) document.getElementById('searchSuggestions').style.display = 'none';
+    if (!e.target.closest('.search-box')) {
+        const box = document.getElementById('searchSuggestions');
+        if(box) box.style.display = 'none';
+    }
 });

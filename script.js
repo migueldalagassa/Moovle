@@ -1,67 +1,82 @@
 const API_KEY = '7dc850a67b09d8b2f84f78b53deecf5b';
 const BASE_URL = 'https://api.themoviedb.org/3';
-const IMG_URL = 'https://image.tmdb.org/t/p/w300'; 
+const IMG_URL = 'https://image.tmdb.org/t/p/w300';
 
 let favorites = JSON.parse(localStorage.getItem('moovle_favs')) || [];
 let currentItem = null;
-let currentType = 'movie', currentGenre = '', currentPage = 1;
-let isFavPage = false;
+let currentType = 'movie';
+let currentPage = 1;
+let currentGenre = '';
 
 window.onload = () => loadMovies();
 
 async function loadMovies(isNext = false) {
-    if (isFavPage) return;
     const grid = document.getElementById('mainGrid');
-    const loadArea = document.getElementById('loadMoreArea');
+    const loadBtn = document.getElementById('loadMoreBtn');
     
-    if (!isNext) { currentPage = 1; grid.innerHTML = ''; }
-    try {
-        let url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&language=pt-BR&page=${currentPage}&sort_by=popularity.desc`;
-        if (currentGenre === 'anime') url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&with_genres=16&with_origin_country=JP&language=pt-BR&page=${currentPage}`;
-        else if (currentGenre) url += `&with_genres=${currentGenre}`;
+    if (!isNext) { 
+        currentPage = 1; 
+        grid.innerHTML = ''; 
+    } else {
+        loadBtn.innerText = "CARREGANDO...";
+    }
 
+    let url = `${BASE_URL}/${currentType}/popular?api_key=${API_KEY}&language=pt-BR&page=${currentPage}`;
+    if (currentGenre) {
+        let genreQuery = currentGenre === 'anime' ? 'with_genres=16&with_origin_country=JP' : `with_genres=${currentGenre}`;
+        url = `${BASE_URL}/discover/${currentType}?api_key=${API_KEY}&${genreQuery}&language=pt-BR&page=${currentPage}&sort_by=popularity.desc`;
+    }
+
+    try {
         const res = await fetch(url);
         const data = await res.json();
-        data.results.forEach(item => { if(item.poster_path) createCard(item, grid); });
+        
+        data.results.forEach(item => { if(item.poster_path) createCard(item); });
         
         currentPage++;
-        if(loadArea) loadArea.style.display = 'block';
-    } catch (e) { console.error(e); }
+        if(loadBtn) {
+            loadBtn.innerText = "CARREGAR MAIS";
+            loadBtn.style.display = data.results.length ? 'inline-block' : 'none';
+        }
+    } catch (e) {
+        console.error(e);
+        if(loadBtn) loadBtn.innerText = "CARREGAR MAIS";
+    }
 }
 
-function createCard(item, container) {
+function createCard(item) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-    card.innerHTML = `<img src="${IMG_URL + item.poster_path}" loading="lazy"><div class="card-title">${item.title || item.name}</div>`;
+    card.innerHTML = `<img src="${IMG_URL + item.poster_path}" loading="lazy">`;
     card.onclick = () => openPlayer(item);
-    container.appendChild(card);
+    document.getElementById('mainGrid').appendChild(card);
 }
 
 async function handleSearchInput(query) {
     const box = document.getElementById('searchSuggestions');
     if (query.length < 2) { box.style.display = 'none'; return; }
-    
     const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&language=pt-BR&query=${query}`);
     const data = await res.json();
     box.innerHTML = '';
-    
-    data.results.slice(0, 6).forEach(item => {
-        if (!item.poster_path) return;
-        const year = (item.release_date || item.first_air_date || "").split('-')[0];
-        const rating = item.vote_average ? item.vote_average.toFixed(1) : "0.0";
+    const results = data.results.filter(i => i.poster_path && i.media_type !== 'person').slice(0, 6);
+    if (!results.length) { box.style.display = 'none'; return; }
+
+    results.forEach(item => {
+        const year = (item.release_date || item.first_air_date || "").split('-')[0] || "N/A";
+        const type = item.media_type === 'tv' ? 'Série' : 'Filme';
         const div = document.createElement('div');
         div.className = 'suggestion-item';
         div.innerHTML = `
             <img src="${IMG_URL + item.poster_path}">
             <div class="sug-info">
-                <span class="sug-title">${item.title || item.name}</span>
+                <div class="sug-title">${item.title || item.name}</div>
                 <div class="sug-meta">
-                    <span class="sug-tag">${item.media_type === 'tv' ? 'Série' : 'Filme'}</span>
+                    <span class="sug-tag">${type}</span>
                     <span>${year}</span>
-                    <span class="sug-rating"><i class="fas fa-star"></i> ${rating}</span>
+                    <span class="sug-rating"><i class="fas fa-star"></i> ${item.vote_average.toFixed(1)}</span>
                 </div>
             </div>`;
-        div.onclick = () => { openPlayer(item); box.style.display = 'none'; };
+        div.onclick = () => { openPlayer(item); box.style.display = 'none'; document.getElementById('searchInput').value = ''; };
         box.appendChild(div);
     });
     box.style.display = 'block';
@@ -71,55 +86,51 @@ function openPlayer(item) {
     currentItem = item;
     const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
     const modal = document.getElementById('playerModal');
-    const player = document.getElementById('videoPlayer');
+    document.getElementById('movieTitleDisplay').innerText = (item.title || item.name).toUpperCase();
+    document.getElementById('movieDescription').innerText = item.overview || "";
     modal.style.display = 'flex';
-    document.getElementById('movieTitleDisplay').innerText = "CARREGANDO...";
-    player.src = "";
-    setTimeout(() => {
-        document.getElementById('movieTitleDisplay').innerText = (item.title || item.name).toUpperCase();
-        document.getElementById('movieDescription').innerText = item.overview || "";
-        player.src = `https://vidsrc.to/embed/${type}/${item.id}`;
-    }, 400);
+    document.getElementById('videoPlayer').src = `https://vidsrc.me/embed/${type}?tmdb=${item.id}`;
     updateStarUI();
 }
 
-function closePlayer() { document.getElementById('videoPlayer').src = ""; document.getElementById('playerModal').style.display = 'none'; }
-
-function filterType(type, el) {
-    isFavPage = false;
-    currentType = type === 'all' ? 'movie' : type;
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    loadMovies();
+function closePlayer() {
+    document.getElementById('videoPlayer').src = "";
+    document.getElementById('playerModal').style.display = 'none';
 }
 
 function filterGenre(id, btn) {
-    isFavPage = false;
     currentGenre = id;
     document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     loadMovies();
 }
 
-function showFavorites(el) {
-    isFavPage = true;
-    const grid = document.getElementById('mainGrid');
-    if(document.getElementById('loadMoreArea')) document.getElementById('loadMoreArea').style.display = 'none';
+function filterType(type, el) {
+    currentType = type === 'all' ? 'movie' : type;
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     el.classList.add('active');
-    grid.innerHTML = favorites.length ? '' : '<p style="padding:20px; color:gray;">Nenhum favorito.</p>';
-    favorites.forEach(item => createCard(item, grid));
+    loadMovies();
 }
 
 function toggleFavorite() {
-    const index = favorites.findIndex(f => f.id === currentItem.id);
-    index === -1 ? favorites.push(currentItem) : favorites.splice(index, 1);
+    const idx = favorites.findIndex(f => f.id === currentItem.id);
+    idx === -1 ? favorites.push(currentItem) : favorites.splice(idx, 1);
     localStorage.setItem('moovle_favs', JSON.stringify(favorites));
     updateStarUI();
 }
 
 function updateStarUI() {
     const isFav = favorites.some(f => f.id === currentItem.id);
-    const star = document.querySelector('#modalFavBtn i');
-    if(star) star.style.color = isFav ? "#fbbf24" : "#fff";
+    document.querySelector('#modalFavBtn i').style.color = isFav ? "#fbbf24" : "#fff";
 }
+
+function showFavorites(el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    const grid = document.getElementById('mainGrid');
+    grid.innerHTML = favorites.length ? '' : '<p style="padding:20px; color:gray;">Vazio.</p>';
+    favorites.forEach(item => createCard(item));
+    document.getElementById('loadMoreBtn').style.display = 'none';
+}
+
+document.addEventListener('click', (e) => { if (!e.target.closest('.search-box')) document.getElementById('searchSuggestions').style.display = 'none'; });

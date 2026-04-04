@@ -50,39 +50,44 @@
     </main>
 
     <div id="playerModal" class="modal-overlay" style="display: none;">
-        <div class="player-card-premium">
-            <div class="player-header">
-                <div class="header-left">
-                    <button class="back-btn-circle" onclick="closePlayer()" title="Fechar">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <div class="title-info">
-                        <h3 id="movieTitleDisplay">CARREGANDO...</h3>
-                        <span class="streaming-tag">FULL HD</span>
-                    </div>
-                </div>
-                <button id="modalFavBtn" class="fav-btn-premium" onclick="toggleFavorite()">
-                    <i class="fas fa-star"></i>
+    <div class="player-card-premium">
+        <div class="player-header">
+            <div class="header-left">
+                <button class="back-btn-circle" onclick="closePlayer()" title="Fechar">
+                    <i class="fas fa-arrow-left"></i>
                 </button>
+                <div class="title-info">
+                    <h3 id="movieTitleDisplay">CARREGANDO...</h3>
+                    <span class="streaming-tag">FULL HD</span>
+                </div>
             </div>
+            <button id="modalFavBtn" class="fav-btn-premium" onclick="toggleFavorite()">
+                <i class="fas fa-star"></i>
+            </button>
+        </div>
 
-            <div class="video-wrapper">
-                <div class="ads-notice-premium">
-                    <i class="fas fa-info-circle"></i> Feche os anúncios para liberar o vídeo
-                </div>
-                <div class="video-container-premium">
-                    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
-                        allow="autoplay; encrypted-media">
-                    </iframe>
-                </div>
+        <div class="adblock-alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Se o vídeo não carregar ou der erro de conexão, desative o Adblock.</span>
+        </div>
+
+        <div class="video-wrapper">
+            <div class="ads-notice-premium">
+                <i class="fas fa-info-circle"></i> Feche os anúncios para liberar o vídeo
             </div>
-            
-            <div class="player-footer">
-                <p id="movieDescription" style="color: #ccc; font-size: 0.9rem; margin-top: 15px;"></p>
+            <div class="video-container-premium">
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen 
+                    allow="autoplay; encrypted-media">
+                </iframe>
             </div>
         </div>
+        
+        <div class="player-footer">
+            <p id="movieDescription" style="color: #ccc; font-size: 0.9rem; margin-top: 15px;"></p>
+        </div>
     </div>
-
+</div>
+    
     <script src="script.js"></script>
 </body>
 </html>

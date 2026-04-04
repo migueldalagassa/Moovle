@@ -1,6 +1,7 @@
 const API_KEY = '7dc850a67b09d8b2f84f78b53deecf5b';
 const BASE_URL = 'https://api.themoviedb.org/3';
-const IMG_URL = 'https://image.tmdb.org/t/p/w300';
+// Reduzido para w200 para voar no celular
+const IMG_URL = 'https://image.tmdb.org/t/p/w200'; 
 
 let favorites = JSON.parse(localStorage.getItem('moovle_favs')) || [];
 let currentItem = null;
@@ -44,10 +45,12 @@ async function loadMovies(isNext = false) {
     }
 }
 
+// Função com Lazy Loading para performance máxima
 function createCard(item) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-    card.innerHTML = `<img src="${IMG_URL + item.poster_path}" loading="lazy">`;
+    const title = item.title || item.name;
+    card.innerHTML = `<img src="${IMG_URL + item.poster_path}" alt="${title}" loading="lazy">`;
     card.onclick = () => openPlayer(item);
     document.getElementById('mainGrid').appendChild(card);
 }
@@ -67,7 +70,7 @@ async function handleSearchInput(query) {
         const div = document.createElement('div');
         div.className = 'suggestion-item';
         div.innerHTML = `
-            <img src="${IMG_URL + item.poster_path}">
+            <img src="${IMG_URL + item.poster_path}" loading="lazy">
             <div class="sug-info">
                 <div class="sug-title">${item.title || item.name}</div>
                 <div class="sug-meta">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOOVLE TV</title>
+    <title>MoovleTV</title>
     
     <link rel="icon" type="image/png" href="FaviconMoovleTV.png">
     <link rel="apple-touch-icon" href="FaviconMoovleTV.png">
@@ -11,32 +11,20 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header class="main-header">
         <div class="logo" onclick="location.reload()">MOOVLE<span style="color: #0062ff;">TV</span></div>
+        
         <div class="header-center">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="O que vamos assistir hoje?" oninput="handleSearchInput(this.value)">
                 <div id="searchSuggestions" class="search-suggestions"></div>
             </div>
         </div>
+
         <div class="header-right">
-            <div id="login-container">
-                <div id="g_id_onload" 
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID" 
-                     data-callback="handleCredentialResponse">
-                </div>
-                <div class="g_id_signin" data-type="standard" data-shape="pill"></div>
             </div>
-            
-            <div id="user-profile" style="display: none; align-items: center; gap: 10px;">
-                <span id="user-name" style="color: white; font-weight: 600;"></span>
-                <img id="user-pic" src="" alt="User" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #0062ff;">
-            </div>
-        </div>
     </header>
 
     <div class="layout">
